@@ -52,8 +52,16 @@ def create(response):
 
 def lists(response):
     if response.method == "POST":
-        print(response.POST)
-        return HttpResponseRedirect("/page1/%s" %response.POST.get("goto"))
+        if response.POST.get("delete"):
+            print(response.POST)
+            for item in ToDoList.objects.all():
+                if response.POST.get("delete") == item.name:
+                    t = ToDoList.objects.get(name=item.name)
+                    t.delete()
+                    return HttpResponseRedirect("/lists", {})
+        else:
+            print(response.POST)
+            return HttpResponseRedirect("/page1/%s" %response.POST.get("goto"))
     else:
         form = ListCreator()
         ls = [item.name for item in ToDoList.objects.all()]
