@@ -1,0 +1,18 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Lists
+{% endblock title %}
+
+{% block content %}
+    <form method="post", action="/lists/">
+        {% csrf_token %}
+        {% for item in lists  %}
+            <div class="input-group mb-3">
+                <div class="input-ground-prepend">
+                    <button type="submit", name="goto", value="{{item}}", class="btn btn-success">{{item}}</button>
+                </div>
+            </div>
+        {% endfor %}
+    </form>
+{% endblock content %}
