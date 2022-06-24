@@ -44,7 +44,7 @@ def create(response):
             t = ToDoList(name=n)
             t.save()
 
-            return HttpResponseRedirect("page1/%s" %t.name)
+            return HttpResponseRedirect("/page1/%s" %t.name)
 
     else:
         form = ListCreator()
