@@ -6,13 +6,13 @@ from .forms import ListCreator
 
 # Create your views here.
 
-def index(response):
+def index(response): # test view
     return render(response, "main/base.html", {})
 
-def home(response):
+def home(response): #test view
     return render(response, "main/home.html", {})
 
-def show(response, name):
+def show(response, name): # shows list specified in name parameter
     ls = ToDoList.objects.get(name=name)
 
     if response.method == "POST":
@@ -35,7 +35,7 @@ def show(response, name):
   
     return render(response, "main/list.html", {"list":ls, "name":ls.name})
 
-def create(response):
+def create(response): # creates list with name specified in form
     if response.method == "POST":
         form = ListCreator(response.POST)
         
@@ -50,7 +50,7 @@ def create(response):
         form = ListCreator()
         return render(response, "main/create.html", {"form":form})
 
-def lists(response):
+def lists(response): # shows all lists, capable of deleting lists
     if response.method == "POST":
         if response.POST.get("delete"):
             print(response.POST)
