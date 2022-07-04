@@ -45,12 +45,14 @@
     <body>
         <div class="sidenav">
             <a href="/">Home</a>
-            <a href="/page1/mylist">Default</a>
-            <a href="/create">Create</a>
-            <a href="/lists">ToDoLists</a>
-            <a href="/register/">Sign In</a>
-            <a href="/login/">Log in</a>
-            <a href="/logout">Log out</a>
+            {% if user.is_authenticated %}
+                <a href="/create">Create</a>
+                <a href="/lists">ToDoLists</a>
+                <a href="/logout">Log out</a>
+            {% else %}
+                <a href="/register/">Sign In</a>
+                <a href="/login/">Log in</a>
+            {% endif %}         
 
         </div>
 
@@ -65,6 +67,9 @@
                         {% endblock %}
                     {% else %}
                         <p><a href="/login">Log in is required</a></p>
+                        {% block signin %}
+                        test
+                        {% endblock %}
                     {% endif %}
                     {% block log %}
                     {% endblock %}

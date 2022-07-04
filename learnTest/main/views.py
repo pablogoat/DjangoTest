@@ -1,4 +1,5 @@
 from itertools import count
+from unicodedata import name
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import ToDoList, Item
@@ -13,7 +14,7 @@ def home(response): #test view
     return render(response, "main/home.html", {})
 
 def show(response, name): # shows list specified in name parameter
-    ls = ToDoList.objects.get(name=name)
+    ls = response.user.todolist.get(name=name)
 
     if response.method == "POST":
         print(response.POST)
@@ -43,8 +44,9 @@ def create(response): # creates list with name specified in form
             n = form.cleaned_data["name"]
             t = ToDoList(name=n)
             t.save()
+            response.user.todolist.add(t)
 
-            return HttpResponseRedirect("/page1/%s" %t.name)
+            return HttpResponseRedirect("/page1/%s" %n)
 
     else:
         form = ListCreator()
@@ -64,5 +66,5 @@ def lists(response): # shows all lists, capable of deleting lists
             return HttpResponseRedirect("/page1/%s" %response.POST.get("goto"))
     else:
         form = ListCreator()
-        ls = [item.name for item in ToDoList.objects.all()]
+        ls = [item.name for item in response.user.todolist.all()]
         return render(response, "main/allList.html", {"lists": ls})
